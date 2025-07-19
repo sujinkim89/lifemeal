@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🩺 HolyFit - Balance Life
 
-## Getting Started
+> 400여 가지 영양소로 완성하는 진짜 건강 - AI 기반 맞춤형 영양 관리 솔루션
 
-First, run the development server:
+## 📋 프로젝트 소개
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+HolyFit은 단순한 칼로리 계산을 넘어 400여 가지 미량 영양소를 과학적으로 분석하고, 개인 맞춤형 영양 솔루션을 제공하는 헬스케어 서비스입니다.
+
+### 주요 특징
+- 🔬 **400여 가지 영양소 분석**: 비타민, 미네랄, 파이토케미컬, 미량원소 등 종합 분석
+- 🤖 **AI 기반 식단 분석**: 사진 한 장으로 영양 성분 자동 분석
+- 👨‍⚕️ **의학적 검증**: 의사와 영양사가 검증한 과학적 솔루션
+- 🎯 **맞춤형 코칭**: 개인별 영양 상태에 따른 1:1 가이드
+- 🍱 **밸런스밀**: 부족한 영양소를 채우는 구독형 식사 서비스
+
+## 🚀 기술 스택
+
+- **Frontend**: Next.js 14, TypeScript, Tailwind CSS
+- **UI/UX**: Lucide Icons, Radix UI
+- **Font**: Pretendard (한글 최적화)
+- **State Management**: React Context API
+- **Styling**: Tailwind CSS with custom design system
+
+## 📁 프로젝트 구조
+
+```
+holyfit/
+├── app/                    # Next.js 14 App Router
+│   ├── page.tsx           # 랜딩 페이지
+│   ├── onboarding/        # 온보딩 & 문진
+│   ├── analysis/          # 영양 분석 결과
+│   ├── subscribe/         # 밸런스밀 구독
+│   ├── dashboard/         # 대시보드 (개발 예정)
+│   └── layout.tsx         # 루트 레이아웃
+├── lib/                   # 유틸리티 & 데이터
+│   ├── contexts/          # React Context
+│   ├── data/              # 영양소 데이터
+│   └── utils.ts           # 유틸리티 함수
+└── public/                # 정적 파일
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎨 주요 기능
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. 랜딩 페이지
+- 서비스 소개 및 주요 특징 안내
+- 영양 불균형 문제점 설명
+- CTA 버튼 (무료 진단, 구독 신청)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 2. 온보딩 & 문진 (5단계)
+- 기본 정보 입력 (이름, 성별, 나이)
+- 신체 정보 (키, 체중)
+- 라이프스타일 (활동량, 식사 패턴)
+- 건강검진 정보 (선택사항)
+- 입력 정보 확인
 
-## Learn More
+### 3. 영양 분석 결과
+- 400여 가지 영양소별 상태 표시 (주요 영양소 중심)
+- 부족한 영양소 TOP 5 상세 정보
+- 영양소별 캐릭터 시스템 (의인화)
+- 맞춤형 밸런스밀 추천
 
-To learn more about Next.js, take a look at the following resources:
+### 4. 밸런스밀 구독
+- 주차별 신체 변화 타임라인
+- 구독 플랜 선택 (체험팩, 정기구독, 프리미엄)
+- 고객 후기 및 혜택 안내
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🏗️ 개발 현황
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### ✅ 완료된 기능
+- [x] 프로젝트 초기 설정
+- [x] 랜딩 페이지
+- [x] 온보딩 & 문진 페이지
+- [x] 분석 결과 페이지
+- [x] 구독 페이지
+- [x] 영양소 캐릭터 시스템
+- [x] 디자인 시스템 구축
 
-## Deploy on Vercel
+### 📝 개발 예정
+- [ ] 식단 기록 & AI 분석 (사진 업로드)
+- [ ] 영양 대시보드
+- [ ] 대화형 영양 코칭
+- [ ] 사용자 설정 페이지
+- [ ] 백엔드 API 연동
+- [ ] 결제 시스템 통합
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🛠️ 설치 및 실행
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+# 의존성 설치
+npm install
+
+# 개발 서버 실행
+npm run dev
+
+# 프로덕션 빌드
+npm run build
+
+# 프로덕션 실행
+npm start
+```
+
+개발 서버 실행 후 [http://localhost:3000](http://localhost:3000)에서 확인할 수 있습니다.
+
+## 🎯 향후 계획
+
+1. **AI 식단 분석**: OpenAI Vision API를 활용한 음식 사진 분석
+2. **대화형 코칭**: 영양소 캐릭터와의 인터랙티브한 대화
+3. **커뮤니티**: 사용자간 식단 공유 및 챌린지
+4. **웨어러블 연동**: Apple Health, Samsung Health 등과 연동
+5. **B2B 서비스**: 기업 임직원 건강관리 프로그램
+
+## 💡 영양소 캐릭터 시스템
+
+각 영양소는 고유한 캐릭터로 의인화되어 사용자와 친근하게 소통합니다:
+
+- **프로틴맨** (단백질): 💪 근육을 지키는 정의의 히어로
+- **비타민C요정** (비타민 C): 🧚 면역력과 피부를 담당하는 싱글벙글 요정
+- **식이섬유 스파이** (식이섬유): 🧹 장 속을 청소하며 은밀하게 활약
+- **지방박사** (지방): 🧈 오해를 풀어주는 이성적인 캐릭터
+
+## 📞 문의
+
+- Email: contact@holyfit.com
+- Website: https://holyfit.com
+
+---
+
+© 2024 HolyFit. All rights reserved.

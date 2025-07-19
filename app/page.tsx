@@ -1,103 +1,200 @@
-import Image from "next/image";
+import { ArrowRight, CheckCircle, Heart, Shield, Target } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div style={{ minHeight: "100vh", backgroundColor: "#f9fafb" }}>
+      {/* Hero Section */}
+      <section style={{ backgroundColor: "white", padding: "80px 0" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 16px", textAlign: "center" }}>
+          <div style={{ 
+            display: "inline-flex", 
+            alignItems: "center", 
+            backgroundColor: "#dbeafe", 
+            padding: "8px 16px", 
+            borderRadius: "9999px", 
+            marginBottom: "32px",
+            color: "#1d4ed8",
+            fontSize: "14px",
+            fontWeight: "500"
+          }}>
+            <Shield style={{ marginRight: "8px", width: "16px", height: "16px" }} />
+            의사가 개발한 과학적 영양 솔루션
+          </div>
+          
+          <h1 style={{ 
+            marginBottom: "24px", 
+            fontSize: "48px", 
+            fontWeight: "bold", 
+            color: "#111827",
+            lineHeight: "1.2"
+          }}>
+            진짜 건강은
+            <span style={{ display: "block", color: "#2563eb" }}>400여 가지 영양소 균형</span>
+            에서 시작됩니다
+          </h1>
+          
+          <p style={{ 
+            margin: "0 auto 40px", 
+            maxWidth: "512px", 
+            fontSize: "20px", 
+            color: "#6b7280"
+          }}>
+            단순한 탄단지 계산을 넘어, 현대인에게 부족한 400여 가지 미량 영양소를
+            과학적으로 분석하고 맞춤 솔루션을 제공합니다.
+          </p>
+          
+          <div style={{ 
+            display: "flex", 
+            flexDirection: "column", 
+            alignItems: "center", 
+            gap: "16px", 
+            marginBottom: "64px"
+          }}>
+            <Link 
+              href="/onboarding" 
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                backgroundColor: "#2563eb",
+                color: "white",
+                padding: "12px 24px",
+                borderRadius: "8px",
+                textDecoration: "none",
+                fontSize: "16px",
+                fontWeight: "600",
+                border: "none",
+                cursor: "pointer"
+              }}
+            >
+              무료 영양 진단 받기
+              <ArrowRight style={{ marginLeft: "8px", width: "20px", height: "20px" }} />
+            </Link>
+            <Link 
+              href="/subscribe"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                backgroundColor: "white",
+                color: "#374151",
+                padding: "12px 24px",
+                borderRadius: "8px",
+                textDecoration: "none",
+                fontSize: "16px",
+                fontWeight: "600",
+                border: "2px solid #e5e7eb",
+                cursor: "pointer"
+              }}
+            >
+              밸런스밀 정기구독
+            </Link>
+          </div>
+          
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "32px", textAlign: "center" }}>
+            <div>
+              <div style={{ fontSize: "24px", fontWeight: "bold", color: "#2563eb" }}>400+</div>
+              <div style={{ color: "#6b7280" }}>미량 영양소 분석</div>
+            </div>
+            <div>
+              <div style={{ fontSize: "24px", fontWeight: "bold", color: "#2563eb" }}>30,000+</div>
+              <div style={{ color: "#6b7280" }}>건강 개선 사례</div>
+            </div>
+            <div>
+              <div style={{ fontSize: "24px", fontWeight: "bold", color: "#2563eb" }}>98%</div>
+              <div style={{ color: "#6b7280" }}>재구독률</div>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Problem Section */}
+      <section style={{ padding: "80px 0", backgroundColor: "#f3f4f6" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 16px" }}>
+          <div style={{ textAlign: "center", marginBottom: "48px" }}>
+            <h2 style={{ fontSize: "24px", fontWeight: "bold", color: "#111827", marginBottom: "16px" }}>
+              왜 '탄단지'만으로는 부족할까요?
+            </h2>
+            <p style={{ fontSize: "20px", color: "#6b7280" }}>
+              칼로리만 계산하다 놓치게 되는 중요한 영양소들이 있습니다
+            </p>
+          </div>
+          
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "32px" }}>
+            <div style={{ 
+              backgroundColor: "white", 
+              borderRadius: "12px", 
+              padding: "24px", 
+              textAlign: "center",
+              boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1)"
+            }}>
+              <div style={{ marginBottom: "16px", fontSize: "32px" }}>⚠️</div>
+              <h3 style={{ marginBottom: "12px", fontSize: "20px", fontWeight: "bold" }}>영양 불균형</h3>
+              <p style={{ color: "#6b7280" }}>
+                칼로리와 3대 영양소만 신경쓰다 보면 비타민, 미네랄 등 필수 영양소가 부족해집니다
+              </p>
+            </div>
+            
+            <div style={{ 
+              backgroundColor: "white", 
+              borderRadius: "12px", 
+              padding: "24px", 
+              textAlign: "center",
+              boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1)"
+            }}>
+              <div style={{ marginBottom: "16px", fontSize: "32px" }}>😰</div>
+              <h3 style={{ marginBottom: "12px", fontSize: "20px", fontWeight: "bold" }}>만성 피로</h3>
+              <p style={{ color: "#6b7280" }}>
+                영양소 부족은 피로, 면역력 저하, 피부 트러블 등 다양한 건강 문제로 이어집니다
+              </p>
+            </div>
+            
+            <div style={{ 
+              backgroundColor: "white", 
+              borderRadius: "12px", 
+              padding: "24px", 
+              textAlign: "center",
+              boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1)"
+            }}>
+              <div style={{ marginBottom: "16px", fontSize: "32px" }}>📊</div>
+              <h3 style={{ marginBottom: "12px", fontSize: "20px", fontWeight: "bold" }}>개인차 무시</h3>
+              <p style={{ color: "#6b7280" }}>
+                나이, 성별, 생활습관에 따라 필요한 영양소가 다른데 획일적인 기준만 따르고 있습니다
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section style={{ padding: "80px 0", backgroundColor: "#2563eb", color: "white" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 16px", textAlign: "center" }}>
+          <h2 style={{ marginBottom: "24px", fontSize: "24px", fontWeight: "bold" }}>
+            지금 바로 당신의 영양 상태를 확인해보세요
+          </h2>
+          <p style={{ marginBottom: "32px", fontSize: "20px", opacity: 0.9 }}>
+            3분 진단으로 400여 가지 영양소 분석 리포트를 받아보실 수 있습니다
+          </p>
+          <Link 
+            href="/onboarding" 
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              backgroundColor: "white",
+              color: "#2563eb",
+              padding: "16px 32px",
+              borderRadius: "8px",
+              textDecoration: "none",
+              fontSize: "18px",
+              fontWeight: "bold",
+              border: "none",
+              cursor: "pointer"
+            }}
+          >
+            무료 진단 시작하기
+            <ArrowRight style={{ marginLeft: "8px", width: "20px", height: "20px" }} />
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }
