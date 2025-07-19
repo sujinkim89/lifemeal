@@ -24,7 +24,7 @@ export interface FoodSearchResult {
 
 export class NutritionAPI {
   private apiKey: string;
-  private baseUrl = 'http://openapi.foodsafetykorea.go.kr/api';
+  private baseUrl = 'https://apis.data.go.kr/1471000/FoodNtrCpntDbInfo02';
 
   constructor() {
     this.apiKey = process.env.FOOD_SAFETY_API_KEY || '';
@@ -32,16 +32,23 @@ export class NutritionAPI {
 
   // 식품명으로 영양정보 검색
   async searchFood(foodName: string): Promise<FoodSearchResult> {
-    const url = `${this.baseUrl}/${this.apiKey}/I2790/json/1/100/DESC_KOR=${encodeURIComponent(foodName)}`;
+    const url = `${this.baseUrl}/getFoodNtrCpntDbInq02?serviceKey=${this.apiKey}&pageNo=1&numOfRows=10&type=json&FOOD_NM_KR=${encodeURIComponent(foodName)}`;
     
     try {
       const response = await fetch(url);
-      const data = await response.json();
       
-      if (data.I2790?.row) {
+      if (!response.ok) {
+        console.error('API 응답 오류:', response.status, response.statusText);
+        return { total_count: 0, items: [] };
+      }
+      
+      const data = await response.json();
+      console.log('API 응답:', data); // 디버깅용
+      
+      if (data.body?.items) {
         return {
-          total_count: data.I2790.total_count,
-          items: data.I2790.row.map(this.mapToNutritionData)
+          total_count: data.body.totalCount || data.body.items.length,
+          items: data.body.items.map(this.mapToNutritionData)
         };
       }
       
@@ -55,24 +62,23 @@ export class NutritionAPI {
   // API 응답을 NutritionData 형식으로 변환
   private mapToNutritionData(apiData: any): NutritionData {
     return {
-      food_name: apiData.DESC_KOR || '',
-      energy: parseFloat(apiData.NUTR_CONT1) || 0,      // 에너지
-      protein: parseFloat(apiData.NUTR_CONT2) || 0,     // 단백질
-      fat: parseFloat(apiData.NUTR_CONT3) || 0,         // 지방
-      carbohydrate: parseFloat(apiData.NUTR_CONT4) || 0, // 탄수화물
-      sugar: parseFloat(apiData.NUTR_CONT5) || 0,       // 당류
-      fiber: parseFloat(apiData.NUTR_CONT6) || 0,       // 식이섬유
-      calcium: parseFloat(apiData.NUTR_CONT7) || 0,     // 칼슘
-      iron: parseFloat(apiData.NUTR_CONT8) || 0,        // 철
-      sodium: parseFloat(apiData.NUTR_CONT9) || 0,      // 나트륨
-      vitamin_c: parseFloat(apiData.NUTR_CONT10) || 0,  // 비타민C
+      food_name: apiData.FOOD_NM_KR || '',
+      energy: parseFloat(apiData.AMT_NUM1) || 0,        // 에너지(kcal)
+      protein: parseFloat(apiData.AMT_NUM3) || 0,       // 단백질(g)  
+      fat: parseFloat(apiData.AMT_NUM4) || 0,           // 지방(g)
+      carbohydrate: parseFloat(apiData.AMT_NUM2) || 0,  // 탄수화물(g)
+      sugar: parseFloat(apiData.AMT_NUM5) || 0,         // 당류(g)
+      fiber: parseFloat(apiData.AMT_NUM6) || 0,         // 식이섬유(g)
+      calcium: parseFloat(apiData.AMT_NUM7) || 0,       // 칼슘(mg)
+      iron: parseFloat(apiData.AMT_NUM9) || 0,          // 철(mg)
+      sodium: parseFloat(apiData.AMT_NUM8) || 0,        // 나트륨(mg)
+      vitamin_c: parseFloat(apiData.AMT_NUM11) || 0,    // 비타민C(mg)
     };
   }
 
   // 여러 음식의 영양정보 합계 계산
-  calculateTotalNutrition(foods: { name: string; amount: number }[]): Promise<NutritionData> {
-    // 각 음식의 영양정보를 검색하고 양에 따라 계산
-    return Promise.resolve({
+  async calculateTotalNutrition(foods: { name: string; amount: number }[]): Promise<NutritionData> {
+    const totalNutrition: NutritionData = {
       food_name: '종합',
       energy: 0,
       protein: 0,
@@ -84,7 +90,33 @@ export class NutritionAPI {
       iron: 0,
       sodium: 0,
       vitamin_c: 0,
-    });
+    };
+
+    for (const food of foods) {
+      try {
+        const searchResult = await this.searchFood(food.name);
+        if (searchResult.items.length > 0) {
+          const nutrition = searchResult.items[0]; // 첫 번째 검색 결과 사용
+          const ratio = food.amount / 100; // 100g 기준으로 계산
+          
+          totalNutrition.energy += nutrition.energy * ratio;
+          totalNutrition.protein += nutrition.protein * ratio;
+          totalNutrition.fat += nutrition.fat * ratio;
+          totalNutrition.carbohydrate += nutrition.carbohydrate * ratio;
+          totalNutrition.sugar += nutrition.sugar * ratio;
+          totalNutrition.fiber += nutrition.fiber * ratio;
+          totalNutrition.calcium += nutrition.calcium * ratio;
+          totalNutrition.iron += nutrition.iron * ratio;
+          totalNutrition.sodium += nutrition.sodium * ratio;
+          totalNutrition.vitamin_c += nutrition.vitamin_c * ratio;
+        }
+      } catch (error) {
+        console.error(`${food.name} 영양정보 검색 실패:`, error);
+        // 검색 실패시 기본값 사용 (계속 진행)
+      }
+    }
+
+    return totalNutrition;
   }
 }
 

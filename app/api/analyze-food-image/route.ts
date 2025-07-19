@@ -10,7 +10,12 @@ export async function POST(request: NextRequest) {
     
     // 2단계: 식품의약품안전처 DB에서 영양정보 검색
     const nutritionAPI = new NutritionAPI();
-    const nutritionData = await nutritionAPI.calculateTotalNutrition(foodAnalysis.foods);
+    const nutritionData = await nutritionAPI.calculateTotalNutrition(
+      foodAnalysis.foods.map((food: any) => ({
+        name: food.name,
+        amount: food.amount || 150 // 기본 150g (일반적인 1인분)
+      }))
+    );
     
     // 3단계: 영양 균형 분석
     const balanceAnalysis = analyzeNutritionBalance(nutritionData, userProfile);
