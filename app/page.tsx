@@ -52,7 +52,7 @@ export default function Home() {
             marginBottom: "64px"
           }}>
             <Link 
-              href="/onboarding" 
+              href="/auth/signup" 
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -67,26 +67,26 @@ export default function Home() {
                 cursor: "pointer"
               }}
             >
-              무료 영양 진단 받기
+              무료 회원가입
               <ArrowRight style={{ marginLeft: "8px", width: "20px", height: "20px" }} />
             </Link>
             <Link 
-              href="/subscribe"
+              href="/auth/login"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
                 backgroundColor: "white",
-                color: "#374151",
+                color: "#2563eb",
                 padding: "12px 24px",
                 borderRadius: "8px",
                 textDecoration: "none",
                 fontSize: "16px",
                 fontWeight: "600",
-                border: "2px solid #e5e7eb",
+                border: "2px solid #2563eb",
                 cursor: "pointer"
               }}
             >
-              밸런스밀 정기구독
+              로그인
             </Link>
           </div>
           
