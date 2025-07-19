@@ -177,33 +177,36 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={handleGoogleLogin}
-            style={{
-              width: "100%",
-              padding: "12px",
-              backgroundColor: "white",
-              color: "#374151",
-              border: "1px solid #d1d5db",
-              borderRadius: "8px",
-              fontSize: "16px",
-              fontWeight: "500",
-              cursor: "pointer",
-              transition: "background-color 0.2s",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "8px"
-            }}
-          >
-            <img 
-              src="https://developers.google.com/identity/images/g-logo.png" 
-              alt="Google" 
-              style={{ width: "20px", height: "20px" }}
-            />
-            Google로 로그인
-          </button>
+{/* Google 로그인은 OAuth 설정 후 활성화 예정 */}
+          {false && (
+            <button
+              type="button"
+              onClick={handleGoogleLogin}
+              style={{
+                width: "100%",
+                padding: "12px",
+                backgroundColor: "white",
+                color: "#374151",
+                border: "1px solid #d1d5db",
+                borderRadius: "8px",
+                fontSize: "16px",
+                fontWeight: "500",
+                cursor: "pointer",
+                transition: "background-color 0.2s",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px"
+              }}
+            >
+              <img 
+                src="https://developers.google.com/identity/images/g-logo.png" 
+                alt="Google" 
+                style={{ width: "20px", height: "20px" }}
+              />
+              Google로 로그인
+            </button>
+          )}
         </form>
 
         <div style={{ textAlign: "center", marginTop: "24px" }}>
