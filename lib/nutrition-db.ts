@@ -26,8 +26,8 @@ export class NutritionAPI {
   private apiKey: string;
   private baseUrl = 'https://apis.data.go.kr/1471000/FoodNtrCpntDbInfo02';
 
-  constructor() {
-    this.apiKey = process.env.FOOD_SAFETY_API_KEY || '';
+  constructor(apiKey?: string) {
+    this.apiKey = apiKey || process.env.FOOD_SAFETY_API_KEY || '';
   }
 
   // 식품명으로 영양정보 검색

@@ -3,7 +3,7 @@ import { NutritionAPI } from '@/lib/nutrition-db';
 
 export async function GET(request: NextRequest) {
   try {
-    const nutritionAPI = new NutritionAPI();
+    const nutritionAPI = new NutritionAPI(process.env.FOOD_SAFETY_API_KEY);
     
     // 테스트: 김치 검색
     const result = await nutritionAPI.searchFood('김치');

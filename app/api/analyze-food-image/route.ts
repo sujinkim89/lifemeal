@@ -3,13 +3,28 @@ import { NutritionAPI, analyzeNutritionBalance } from '@/lib/nutrition-db';
 
 export async function POST(request: NextRequest) {
   try {
+    // 환경변수 체크
+    if (!process.env.ANTHROPIC_API_KEY) {
+      return NextResponse.json(
+        { success: false, error: 'Anthropic API key가 설정되지 않았습니다.' },
+        { status: 500 }
+      );
+    }
+    
+    if (!process.env.FOOD_SAFETY_API_KEY) {
+      return NextResponse.json(
+        { success: false, error: '식품의약품안전처 API key가 설정되지 않았습니다.' },
+        { status: 500 }
+      );
+    }
+    
     const { image, userProfile } = await request.json();
     
     // 1단계: Claude Vision API로 음식 인식
     const foodAnalysis = await analyzeFoodImage(image);
     
     // 2단계: 식품의약품안전처 DB에서 영양정보 검색
-    const nutritionAPI = new NutritionAPI();
+    const nutritionAPI = new NutritionAPI(process.env.FOOD_SAFETY_API_KEY);
     const nutritionData = await nutritionAPI.calculateTotalNutrition(
       foodAnalysis.foods.map((food: any) => ({
         name: food.name,
