@@ -164,7 +164,7 @@ export default function CoachingPage() {
             gender: userInfo?.gender || 'male',
             weight: userInfo?.weight || 70,
             height: userInfo?.height || 175,
-            activity_level: userInfo?.activity_level || 'moderate'
+            activity_level: userInfo?.activityLevel || 'moderate'
           }
         }),
       });
