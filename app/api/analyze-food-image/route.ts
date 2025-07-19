@@ -47,8 +47,13 @@ export async function POST(request: NextRequest) {
     
   } catch (error) {
     console.error('식단 분석 오류:', error);
+    const errorMessage = error instanceof Error ? error.message : '알 수 없는 오류';
     return NextResponse.json(
-      { success: false, error: '식단 분석 중 오류가 발생했습니다.' },
+      { 
+        success: false, 
+        error: '식단 분석 중 오류가 발생했습니다.',
+        details: errorMessage 
+      },
       { status: 500 }
     );
   }
@@ -99,10 +104,18 @@ async function analyzeFoodImage(imageBase64: string) {
   });
 
   if (!response.ok) {
-    throw new Error('Claude API 요청 실패');
+    const errorData = await response.json();
+    console.error('Claude API 에러:', errorData);
+    throw new Error(`Claude API 요청 실패: ${response.status} - ${JSON.stringify(errorData)}`);
   }
 
   const result = await response.json();
+  console.log('Claude API 응답:', result);
+  
+  if (!result.content || !result.content[0] || !result.content[0].text) {
+    throw new Error('Claude API 응답 형식 오류');
+  }
+  
   const content = result.content[0].text;
   
   try {

@@ -223,7 +223,7 @@ export default function CoachingPage() {
         const errorMessage: Message = {
           id: `error-${messageIdCounter}`,
           type: "coach",
-          content: `죄송해요, 이미지 분석 중 오류가 발생했습니다. 😅\n\n네트워크 연결을 확인하거나 다른 사진으로 다시 시도해주세요!`,
+          content: `죄송해요, 이미지 분석 중 오류가 발생했습니다. 😅\n\n오류: ${error instanceof Error ? error.message : '알 수 없는 오류'}\n\n네트워크 연결을 확인하거나 다른 사진으로 다시 시도해주세요!`,
           character: {
             name: nutrient.character.name,
             emoji: nutrient.character.emoji,
