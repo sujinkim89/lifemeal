@@ -20,18 +20,25 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
 
+    console.log("로그인 시도:", { email, password: "***" });
+
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
+      console.log("로그인 응답:", { data, error });
+
       if (error) {
+        console.error("로그인 에러:", error);
         setError(error.message);
       } else {
+        console.log("로그인 성공:", data);
         router.push("/dashboard");
       }
     } catch (err) {
+      console.error("로그인 예외:", err);
       setError("로그인 중 오류가 발생했습니다.");
     } finally {
       setLoading(false);
