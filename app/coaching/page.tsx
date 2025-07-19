@@ -150,43 +150,94 @@ export default function CoachingPage() {
   const analyzeImageMeal = async (imageUrl: string) => {
     setIsAnalyzing(true);
     
-    setTimeout(() => {
-      const mockAnalysis: NutrientAnalysis[] = [
-        { name: "칼로리", amount: 650, unit: "kcal", percentage: 32, status: "normal" },
-        { name: "탄수화물", amount: 85, unit: "g", percentage: 28, status: "normal" },
-        { name: "단백질", amount: 25, unit: "g", percentage: 50, status: "low" },
-        { name: "지방", amount: 18, unit: "g", percentage: 27, status: "normal" },
-        { name: "식이섬유", amount: 6, unit: "g", percentage: 21, status: "low" },
-        { name: "비타민 C", amount: 15, unit: "mg", percentage: 17, status: "low" },
-        { name: "칼슘", amount: 180, unit: "mg", percentage: 18, status: "low" },
-        { name: "철분", amount: 4, unit: "mg", percentage: 22, status: "low" }
-      ];
-
-      const nutrient = getNutrientById(selectedCoach);
-      if (!nutrient) return;
-
-      const analysisMessage: Message = {
-        id: `analysis-${messageIdCounter}`,
-        type: "coach",
-        content: `사진을 분석해봤어요! 🔍\n\n김치찌개, 흰밥, 계란말이로 보이네요. 한식 기본 구성으로 좋은 선택이에요!\n\n다만 단백질과 비타민이 부족하니 두부나 채소 반찬을 추가하시면 더 균형잡힌 식사가 될 거예요!`,
-        character: {
-          name: nutrient.character.name,
-          emoji: nutrient.character.emoji,
-          color: nutrient.character.color,
+    try {
+      // 실제 AI 분석 API 호출
+      const response = await fetch('/api/analyze-food-image', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        timestamp: new Date(),
-        isAnalysis: true,
-        mealData: {
-          foods: ["김치찌개", "흰밥", "계란말이"],
-          analysis: mockAnalysis
-        }
-      };
+        body: JSON.stringify({
+          image: imageUrl,
+          userProfile: {
+            age: userInfo?.age || 30,
+            gender: userInfo?.gender || 'male',
+            weight: userInfo?.weight || 70,
+            height: userInfo?.height || 175,
+            activity_level: userInfo?.activity_level || 'moderate'
+          }
+        }),
+      });
 
-      setIsAnalyzing(false);
-      setMessages(prev => [...prev, analysisMessage]);
-      setMessageIdCounter(prev => prev + 1);
-      setSelectedImage(null);
-    }, 3000);
+      if (!response.ok) {
+        throw new Error('분석 요청 실패');
+      }
+
+      const result = await response.json();
+      
+      if (result.success) {
+        const realAnalysis: NutrientAnalysis[] = [
+          { name: "칼로리", amount: Math.round(result.data.nutrition.energy), unit: "kcal", percentage: Math.min(100, Math.round((result.data.nutrition.energy / 2000) * 100)), status: result.data.nutrition.energy > 2400 ? "high" : result.data.nutrition.energy < 1600 ? "low" : "normal" },
+          { name: "탄수화물", amount: Math.round(result.data.nutrition.carbohydrate), unit: "g", percentage: Math.min(100, Math.round((result.data.nutrition.carbohydrate / 330) * 100)), status: "normal" },
+          { name: "단백질", amount: Math.round(result.data.nutrition.protein), unit: "g", percentage: Math.min(100, Math.round((result.data.nutrition.protein / 65) * 100)), status: result.data.nutrition.protein < 52 ? "low" : "normal" },
+          { name: "지방", amount: Math.round(result.data.nutrition.fat), unit: "g", percentage: Math.min(100, Math.round((result.data.nutrition.fat / 83) * 100)), status: "normal" },
+          { name: "식이섬유", amount: Math.round(result.data.nutrition.fiber), unit: "g", percentage: Math.min(100, Math.round((result.data.nutrition.fiber / 25) * 100)), status: result.data.nutrition.fiber < 20 ? "low" : "normal" },
+          { name: "비타민 C", amount: Math.round(result.data.nutrition.vitamin_c), unit: "mg", percentage: Math.min(100, Math.round((result.data.nutrition.vitamin_c / 100) * 100)), status: result.data.nutrition.vitamin_c < 80 ? "low" : "normal" },
+          { name: "칼슘", amount: Math.round(result.data.nutrition.calcium), unit: "mg", percentage: Math.min(100, Math.round((result.data.nutrition.calcium / 800) * 100)), status: result.data.nutrition.calcium < 640 ? "low" : "normal" },
+          { name: "철분", amount: Math.round(result.data.nutrition.iron), unit: "mg", percentage: Math.min(100, Math.round((result.data.nutrition.iron / 10) * 100)), status: result.data.nutrition.iron < 8 ? "low" : "normal" }
+        ];
+
+        const nutrient = getNutrientById(selectedCoach);
+        if (!nutrient) return;
+
+        const analysisMessage: Message = {
+          id: `analysis-${messageIdCounter}`,
+          type: "coach",
+          content: `사진을 분석해봤어요! 🔍\n\n${result.data.recognizedFoods.map((f: any) => f.name).join(", ")}이 보이네요.\n\n${result.data.aiComment}\n\n균형 점수: ${result.data.analysis.balance_score}/100점`,
+          character: {
+            name: nutrient.character.name,
+            emoji: nutrient.character.emoji,
+            color: nutrient.character.color,
+          },
+          timestamp: new Date(),
+          isAnalysis: true,
+          mealData: {
+            foods: result.data.recognizedFoods.map((f: any) => f.name),
+            analysis: realAnalysis
+          }
+        };
+
+        setIsAnalyzing(false);
+        setMessages(prev => [...prev, analysisMessage]);
+        setMessageIdCounter(prev => prev + 1);
+        setSelectedImage(null);
+      } else {
+        throw new Error(result.error || '분석 실패');
+      }
+    } catch (error) {
+      console.error('이미지 분석 오류:', error);
+      
+      // 오류 시 기본 분석 결과 표시
+      const nutrient = getNutrientById(selectedCoach);
+      if (nutrient) {
+        const errorMessage: Message = {
+          id: `error-${messageIdCounter}`,
+          type: "coach",
+          content: `죄송해요, 이미지 분석 중 오류가 발생했습니다. 😅\n\n네트워크 연결을 확인하거나 다른 사진으로 다시 시도해주세요!`,
+          character: {
+            name: nutrient.character.name,
+            emoji: nutrient.character.emoji,
+            color: nutrient.character.color,
+          },
+          timestamp: new Date(),
+        };
+        
+        setIsAnalyzing(false);
+        setMessages(prev => [...prev, errorMessage]);
+        setMessageIdCounter(prev => prev + 1);
+        setSelectedImage(null);
+      }
+    }
   };
 
   const analyzeMeals = async (foods: string[]) => {
